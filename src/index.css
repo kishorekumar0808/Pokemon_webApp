@@ -24,3 +24,10 @@
   background: #fed7aa;
   color: #9c4221;
 }
+
+img.official-art {
+  image-rendering: auto;
+}
+img.pixel-sprite {
+  image-rendering: pixelated;
+}

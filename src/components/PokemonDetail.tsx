@@ -1,5 +1,5 @@
-import { useEffect, useState, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 interface Ability {
   ability: { name: string };
@@ -17,25 +17,29 @@ interface PokemonDetail {
   name: string;
   height: number;
   weight: number;
-  sprites: { front_default: string };
+  sprites: {
+    front_default: string;
+    other?: {
+      "official-artwork"?: {
+        front_default: string;
+      };
+    };
+  };
   abilities: Ability[];
   types: Type[];
   stats: Stat[];
 }
 
-/* ---------- helpers ---------- */
-const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const formatStatName = (s: string) =>
-  s.replace('-', ' ').replace('special', 'Sp.');
+  s.replace("-", " ").replace("special", "Sp.");
 
-/* ---------- color map for stat bars ---------- */
 const statColors: Record<string, string> = {
-  hp: '#ef5350',
-  attack: '#fb8c00',
-  defense: '#ffca28',
-  'special-attack': '#42a5f5',
-  'special-defense': '#66bb6a',
-  speed: '#ec407a',
+  hp: "#ef5350",
+  attack: "#fb8c00",
+  defense: "#ffca28",
+  "special-attack": "#42a5f5",
+  "special-defense": "#66bb6a",
+  speed: "#ec407a",
 };
 
 export default function PokemonDetail() {
@@ -46,6 +50,14 @@ export default function PokemonDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const getArtwork = () => {
+    return (
+      pokemon?.sprites.other?.["official-artwork"]?.front_default ||
+      pokemon?.sprites.front_default ||
+      ""
+    );
+  };
+
   useEffect(() => {
     const fetchPokemon = async () => {
       if (!name) return;
@@ -53,11 +65,11 @@ export default function PokemonDetail() {
       setError(null);
       try {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-        if (!res.ok) throw new Error('Pokémon not found');
+        if (!res.ok) throw new Error("Pokémon not found");
         const data: PokemonDetail = await res.json();
         setPokemon(data);
       } catch (e) {
-        setError(e instanceof Error ? e.message : 'Unknown error');
+        setError(e instanceof Error ? e.message : "Unknown error");
       } finally {
         setLoading(false);
       }
@@ -67,7 +79,7 @@ export default function PokemonDetail() {
 
   const stats = useMemo(() => {
     if (!pokemon) return [];
-    return pokemon.stats.map(s => ({
+    return pokemon.stats.map((s) => ({
       name: formatStatName(s.stat.name),
       value: s.base_stat,
       key: s.stat.name,
@@ -85,7 +97,7 @@ export default function PokemonDetail() {
   if (error || !pokemon) {
     return (
       <div className="text-center py-10">
-        <p className="text-red-500">{error || 'Pokémon not found'}</p>
+        <p className="text-red-500">{error || "Pokémon not found"}</p>
         <button
           onClick={() => navigate(-1)}
           className="mt-4 rounded bg-gray-600 px-4 py-2 text-white hover:bg-gray-700"
@@ -103,7 +115,7 @@ export default function PokemonDetail() {
         <h1 className="text-3xl font-bold capitalize">
           {pokemon.name}
           <span className="ml-2 text-xl font-normal text-gray-500">
-            #{pokemon.id.toString().padStart(3, '0')}
+            #{pokemon.id.toString().padStart(3, "0")}
           </span>
         </h1>
 
@@ -113,17 +125,17 @@ export default function PokemonDetail() {
             Abilities
           </h2>
           <div className="flex flex-wrap gap-2">
-            {pokemon.abilities.map(a => (
+            {pokemon.abilities.map((a) => (
               <span
                 key={a.ability.name}
                 className={`rounded-full px-3 py-1 text-xs font-medium capitalize ${
                   a.is_hidden
-                    ? 'bg-yellow-200 text-yellow-800'
-                    : 'bg-red-200 text-red-800'
+                    ? "bg-yellow-200 text-yellow-800"
+                    : "bg-red-200 text-red-800"
                 }`}
               >
-                {a.ability.name.replace('-', ' ')}
-                {a.is_hidden && ' (Hidden) '}
+                {a.ability.name.replace("-", " ")}
+                {a.is_hidden && " (Hidden) "}
               </span>
             ))}
           </div>
@@ -135,25 +147,25 @@ export default function PokemonDetail() {
         <div className="flex flex-col items-center">
           <div className="rounded-xl bg-gray-50 p-6">
             <img
-              src={pokemon.sprites.front_default}
+              src={getArtwork()}
               alt={pokemon.name}
-              className="h-64 w-64 object-contain"
+              className="h-64 w-64 object-contain official-art"
               loading="lazy"
             />
-            </div>
+          </div>
 
           {/* Types */}
           <div className="mt-4 flex flex-wrap gap-2">
             <span className="text-sm font-semibold text-gray-700">Type</span>
-            {pokemon.types.map(t => (
+            {pokemon.types.map((t) => (
               <span
                 key={t.type.name}
                 className={`rounded-full px-3 py-1 text-xs font-medium capitalize ${
-                  t.type.name === 'grass'
-                    ? 'bg-green-200 text-green-800'
-                    : t.type.name === 'poison'
-                    ? 'bg-purple-200 text-purple-800'
-                    : 'bg-gray-200 text-gray-800'
+                  t.type.name === "grass"
+                    ? "bg-green-200 text-green-800"
+                    : t.type.name === "poison"
+                    ? "bg-purple-200 text-purple-800"
+                    : "bg-gray-200 text-gray-800"
                 }`}
               >
                 {t.type.name}
@@ -181,8 +193,8 @@ export default function PokemonDetail() {
           </h2>
 
           <div className="space-y-3">
-            {stats.map(s => {
-              const percent = (s.value / 255) * 100; // max stat ~255
+            {stats.map((s) => {
+              const percent = (s.value / 255) * 100;
               return (
                 <div key={s.key} className="flex items-center gap-3">
                   <span className="w-20 text-sm font-medium capitalize">
@@ -194,7 +206,7 @@ export default function PokemonDetail() {
                         className="h-full transition-all duration-500"
                         style={{
                           width: `${percent}%`,
-                          backgroundColor: statColors[s.key] || '#9e9e9e',
+                          backgroundColor: statColors[s.key] || "#9e9e9e",
                         }}
                       />
                     </div>

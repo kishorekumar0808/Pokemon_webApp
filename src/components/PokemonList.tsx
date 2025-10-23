@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Pokemon {
   name: string;
@@ -17,12 +17,14 @@ export default function PokemonList() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=50&offset=0');
-      if (!res.ok) throw new Error('Failed to fetch Pokémon');
+      const res = await fetch(
+        "https://pokeapi.co/api/v2/pokemon?limit=50&offset=0"
+      );
+      if (!res.ok) throw new Error("Failed to fetch Pokémon");
       const data = await res.json();
       setPokemons(data.results);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
       setLoading(false);
     }
@@ -37,8 +39,8 @@ export default function PokemonList() {
     const saveScroll = () => {
       scrollPosition.current = window.scrollY;
     };
-    window.addEventListener('beforeunload', saveScroll);
-    return () => window.removeEventListener('beforeunload', saveScroll);
+    window.addEventListener("beforeunload", saveScroll);
+    return () => window.removeEventListener("beforeunload", saveScroll);
   }, []);
 
   // Restore scroll when returning
@@ -48,7 +50,7 @@ export default function PokemonList() {
     }
   }, [loading]);
 
-  const getIdFromUrl = (url: string) => url.split('/').filter(Boolean).pop();
+  const getIdFromUrl = (url: string) => url.split("/").filter(Boolean).pop();
 
   const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
@@ -56,7 +58,10 @@ export default function PokemonList() {
     return (
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {Array.from({ length: 50 }).map((_, i) => (
-          <div key={i} className="bg-gray-200 border-2 border-dashed rounded-xl h-40 animate-pulse" />
+          <div
+            key={i}
+            className="bg-gray-200 border-2 border-dashed rounded-xl h-40 animate-pulse"
+          />
         ))}
       </div>
     );
@@ -90,12 +95,14 @@ export default function PokemonList() {
             }}
           >
             <img
-              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
+              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
               alt={pokemon.name}
-              className="w-24 h-24"
+              className="h-24 w-24 object-contain"
               loading="lazy"
             />
-            <p className="mt-2 font-medium text-gray-800">{capitalize(pokemon.name)}</p>
+            <p className="mt-2 font-medium text-gray-800">
+              {capitalize(pokemon.name)}
+            </p>
           </Link>
         );
       })}
