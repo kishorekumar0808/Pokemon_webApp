@@ -3,6 +3,7 @@
 A lightweight, responsive Pokédex app that fetches and displays Pokémon from the [PokéAPI](https://pokeapi.co/). Built with **Vite + React + TypeScript**.
 
 ![Pokédex Demo](./src/assets/pokimon.png)
+![Pokédex Demo](./src/assets/details.png)
 
 ---
 
