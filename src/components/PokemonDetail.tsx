@@ -130,7 +130,6 @@ export default function PokemonDetail() {
         </div>
       </div>
 
-      /* ----- Main two-column layout ----- */
       <div className="grid gap-8 md:grid-cols-2">
         {/* ----- Left column – sprite + types/height/weight ----- */}
         <div className="flex flex-col items-center">
