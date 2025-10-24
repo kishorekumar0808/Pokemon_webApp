@@ -27,7 +27,7 @@ A lightweight, responsive Pokédex app that fetches and displays Pokémon from t
 
 - **Framework**: [Vite](https://vitejs.dev/) + React + TypeScript
 - **Routing**: [React Router v6](https://reactrouter.com/)
-- **Styling**: Pure CSS (no Tailwind)
+- **Styling**: [CSS anf Tailwind]
 - **API**: [PokéAPI](https://pokeapi.co/)
 
 ---
